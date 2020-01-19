@@ -101,7 +101,7 @@ data(){
     };
   },
 ```
-## 完整示例
+## Example
 [点击这里](https://codesandbox.io/s/vue-side-catalog-5kdfc)
 
 ## Props
