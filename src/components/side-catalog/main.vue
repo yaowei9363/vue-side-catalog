@@ -5,9 +5,11 @@
       'right': right,
       'top': top,
       'left': left,
-      'bottom': bottom
+      'bottom': bottom,
+      'position': isFixed? 'fixed' : 'initial'
     }"
   >
+    <div class="side-catalog__title">{{title}}</div>
     <div
       v-for="(item) in list"
       :key="item.ref"
@@ -42,6 +44,14 @@ import throttle from 'lodash.throttle';
 export default {
   name: 'SideCatalog',
   props: {
+    title:{
+      type: String,
+      default: '',
+    },
+    isFixed:{
+      type: Boolean,
+      default: true
+    },
     right: {
       type: String,
       default: '100px',
@@ -60,6 +70,7 @@ export default {
     },
     list: {
       type: Array,
+      required: true,
       default() {
         return [
           // {

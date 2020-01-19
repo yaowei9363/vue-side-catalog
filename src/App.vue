@@ -94,7 +94,8 @@
     <side-catalog 
       v-bind="catalogProps"
       @title-click="titleClick"
-    ></side-catalog>
+    >
+    </side-catalog>
   </div>
 </template>
 
@@ -113,6 +114,8 @@ export default {
         // right: '100px',
         // top: '100px',
         // scrollElementSelector: '.demo',
+        // isFixed: false,
+        title: '目录',
         list:[
           {
             title: '历史',
