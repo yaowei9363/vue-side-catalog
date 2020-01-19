@@ -1,6 +1,6 @@
 {
   "name": "vue-side-catalog",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A Catalog Component for Vue.js.",
   "private": false,
   "main": "lib/vue-side-catalog.umd.min",

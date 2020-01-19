@@ -184,6 +184,9 @@ export default {
     scrollHandle(e) {
       if(this.isClick) return; 
       const scrollTop = this.scrollElementSelector ? e.target.scrollTop : document.documentElement.scrollTop;
+      if(scrollTop===0) {
+        this.initActive();
+      }
       this.refTopList.some((item, index) => {
         if(scrollTop >= item) {
           this.active = this.refList[index];
