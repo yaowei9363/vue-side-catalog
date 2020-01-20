@@ -8,7 +8,7 @@
         在客户端，JavaScript在传统意义上被实现为一种解释语言，但在最近，它已经可以被即时编译（JIT）执行。随着最新的HTML5和CSS3语言标准的推行它还可用于游戏、桌面和移动应用程序的开发和在服务器端网络环境运行，如Node.js。
       </p>
       <h2 ref="t1">历史</h2>
-        <p>
+      <p>
         1993年，伊利诺伊大学厄巴纳-尚佩恩分校的国家超级电脑应用中心（NCSA）发表了NCSA Mosaic，这是最早流行的图形接口网页浏览器，它在万维网的普及上发挥了重要作用。1994年，一家名为Mosaic Communications的公司在加州芒廷维尤成立了，并雇用了许多原来的NCSA Mosaic开发者用来开发Mosaic Netscape，该公司的目标是取代NCSA Mosaic成为世界第一的网页浏览器。第一个版本的网页浏览器Mosaic Netscape 0.9于1994年底发布。在四个月内，已经占据了四分之三的浏览器市场，并成为1990年代互联网的主要浏览器。为避免NCSA的商标所有权问题，该浏览器于同年更名为Netscape Navigator，该公司命名为Netscape Communications。网景预见到网络需要变得更动态。公司的创始人马克·安德森认为HTML需要一种胶水语言，让网页设计师和兼职程序员可以很容易地使用它来组装图片和插件之类的组件，且代码可以直接编写在网页标记中。
         1995年，网景招募了布兰登·艾克，目标是把Scheme语言嵌入到Netscape Navigator浏览器当中[8]。但更早之前，网景已经跟昇阳合作在Netscape Navigator中支持Java，这时网景内部产生激烈的争论[9]。后来网景决定发明一种与Java搭配使用的辅助脚本语言并且语法上有些类似[10]，这个决策导致排除了采用现有的语言，例如Perl、Python、Tcl或Scheme。为了在其他竞争提案中捍卫JavaScript这个想法，公司需要有一个可以运作的原型。艾克在1995年5月仅花了十天时间就把原型设计出来了。
         最初命名为Mocha，1995年9月在Netscape Navigator 2.0的Beta版中改名为LiveScript，同年12月，Netscape Navigator 2.0 Beta 3中部署时被重命名为JavaScript[1][11]，当时网景公司与昇阳电脑公司组成的开发联盟为了让这门语言搭上Java这个编程语言“热词”，因此将其临时改名为JavaScript，日后这成为大众对这门语言有诸多误解的原因之一[12]
@@ -89,9 +89,224 @@
             &lt;/body&gt;
         &lt;/html&gt;
       </pre>
-      <version ref="t6"/> 
+      <h2 ref="t6">版本</h2>
+      <p>
+        JavaScript最初开发于1996年，被使用于Netscape Navigator网页浏览器。同年微软在Internet Explorer发布了一个实现。由于商标问题，这项实现被命名为JScript。1997年，JavaScript已经被网景公司提交给ECMA制定为标准，称之为ECMAScript，标准编号ECMA-262。使用显式版本号声明对语言的引用，作为一项Mozilla的特性，已在较新版本中被移除（至少为 Firefox 59）。Firefox 4 是最后一个需要显式地在引用时声明明确版本号的版本（1.8.5）。
+      </p>
+      <table
+        class="wikitable"
+        style="text-align:center;"
+      >
+        <tbody>
+          <tr>
+            <th>版本</th>
+            <th>发布日期</th>
+            <th>基于</th>
+            <th>Netscape<br>Navigator</th>
+            <th>Mozilla<br>Firefox</th>
+            <th>Internet<br>Explorer</th>
+            <th>Opera</th>
+            <th>Safari</th>
+            <th>Google<br>Chrome
+            </th>
+          </tr>
+          <tr>
+            <td
+              style="background-color: #FDB3AB;"
+              title="旧版本，不再支持"
+              data-sort-value="1.0"
+            ><span style="display: none;">旧版本，不再支持：</span> 1.0</td>
+            <td>1996年3月</td>
+            <td></td>
+            <td>2.0</td>
+            <td></td>
+            <td>3.0</td>
+            <td></td>
+            <td></td>
+            <td>
+            </td>
+          </tr>
+          <tr>
+            <td
+              style="background-color: #FDB3AB;"
+              title="旧版本，不再支持"
+              data-sort-value="1.1"
+            ><span style="display: none;">旧版本，不再支持：</span> 1.1</td>
+            <td>1996年8月</td>
+            <td></td>
+            <td>3.0</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+            </td>
+          </tr>
+          <tr>
+            <td
+              style="background-color: #FDB3AB;"
+              title="旧版本，不再支持"
+              data-sort-value="1.2"
+            ><span style="display: none;">旧版本，不再支持：</span> 1.2</td>
+            <td>1997年6月</td>
+            <td></td>
+            <td>4.0 - 4.05</td>
+            <td></td>
+            <td></td>
+            <td>3</td>
+            <td></td>
+            <td>
+            </td>
+          </tr>
+          <tr>
+            <td
+              style="background-color: #FDB3AB;"
+              title="旧版本，不再支持"
+              data-sort-value="1.3"
+            ><span style="display: none;">旧版本，不再支持：</span> 1.3</td>
+            <td>1998年10月</td>
+            <td>ECMA-262 1st + 2nd edition</td>
+            <td>4.06 - 4.7x</td>
+            <td></td>
+            <td>4.0</td>
+            <td>5</td>
+            <td></td>
+            <td>
+            </td>
+          </tr>
+          <tr>
+            <td
+              style="background-color: #FDB3AB;"
+              title="旧版本，不再支持"
+              data-sort-value="1.4"
+            ><span style="display: none;">旧版本，不再支持：</span> 1.4</td>
+            <td></td>
+            <td></td>
+            <td>Netscape<br>Server</td>
+            <td></td>
+            <td></td>
+            <td>6</td>
+            <td></td>
+            <td>
+            </td>
+          </tr>
+          <tr>
+            <td
+              style="background-color: #FDB3AB;"
+              title="旧版本，不再支持"
+              data-sort-value="1.5"
+            ><span style="display: none;">旧版本，不再支持：</span> 1.5</td>
+            <td>2000年11月</td>
+            <td>ECMA-262 3rd edition</td>
+            <td>6.0</td>
+            <td>1.0</td>
+            <td>5.5（JScript 5.5）<br>6（JScript 5.6）<br>7（JScript 5.7）<br>8（JScript 5.8）</td>
+            <td>7.0</td>
+            <td>3.0-5</td>
+            <td>1.0 - 10.0.666
+            </td>
+          </tr>
+          <tr>
+            <td
+              style="background-color: #FDB3AB;"
+              title="旧版本，不再支持"
+              data-sort-value="1.6"
+            ><span style="display: none;">旧版本，不再支持：</span> 1.6</td>
+            <td>2005年11月</td>
+            <td>1.5 + Array extras + Array and string generics + E4X</td>
+            <td></td>
+            <td>1.5</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+            </td>
+          </tr>
+          <tr>
+            <td
+              style="background-color: #FDB3AB;"
+              title="旧版本，不再支持"
+              data-sort-value="1.7"
+            ><span style="display: none;">旧版本，不再支持：</span> 1.7</td>
+            <td>2006年10月</td>
+            <td>1.6 + Pythonic generators + Iterators + Let</td>
+            <td></td>
+            <td>2.0</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>28.0.1500.95
+            </td>
+          </tr>
+          <tr>
+            <td
+              style="background-color: #FDB3AB;"
+              title="旧版本，不再支持"
+              data-sort-value="1.8"
+            ><span style="display: none;">旧版本，不再支持：</span> 1.8</td>
+            <td>2008年6月</td>
+            <td>1.7 + Generator expressions + Expression closures</td>
+            <td></td>
+            <td>3.0</td>
+            <td></td>
+            <td>11.50</td>
+            <td></td>
+            <td>
+            </td>
+          </tr>
+          <tr>
+            <td
+              style="background-color: #FDB3AB;"
+              title="旧版本，不再支持"
+              data-sort-value="1.8.1"
+            ><span style="display: none;">旧版本，不再支持：</span> 1.8.1</td>
+            <td></td>
+            <td>1.8 + native JSON support + Minor updates</td>
+            <td></td>
+            <td>3.5</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+            </td>
+          </tr>
+          <tr>
+            <td
+              style="background-color: #FDB3AB;"
+              title="旧版本，不再支持"
+              data-sort-value="1.8.2"
+            ><span style="display: none;">旧版本，不再支持：</span> 1.8.2</td>
+            <td>2009年6月22日</td>
+            <td>1.8.1 + Minor updates</td>
+            <td></td>
+            <td>3.6</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+            </td>
+          </tr>
+          <tr>
+            <td
+              style="background-color: #FDB3AB;"
+              title="旧版本，不再支持"
+              data-sort-value="1.8.5"
+            ><span style="display: none;">旧版本，不再支持：</span> 1.8.5</td>
+            <td>2010年7月27日</td>
+            <td>1.8.2 + New features for ECMA-262 5th edition compliance</td>
+            <td></td>
+            <td>4.0</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- <version ref="t6"/>  -->
     </div>
-    <side-catalog 
+    <side-catalog
       v-bind="catalogProps"
       @title-click="titleClick"
     >
@@ -100,101 +315,118 @@
 </template>
 
 <script>
-import SideCatalog from './components/side-catalog/main.vue';
-import Version from './components/Version';
+import SideCatalog from "./components/side-catalog/main.vue";
+// import Version from './components/Version';
 export default {
-  name: 'app',
+  name: "app",
   components: {
-    SideCatalog,
-    Version,
+    SideCatalog
+    // Version,
   },
-  data(){
+  data() {
     return {
-      catalogProps:{
+      catalogProps: {
         // right: '100px',
         // top: '100px',
         // scrollElementSelector: '.demo',
+        // 内容容器selector(必需)
+        containerElementSelector: '.demo',
         // isFixed: false,
-        title: '目录',
-        list:[
-          {
-            title: '历史',
-            ref: 't1'
-          },
-          {
-            title: '肇始于网景',
-            ref: 't1-1',
-            level: 2
-          },
-          {
-            title: '微软采纳',
-            ref: 't1-2',
-            level: 2
-          },
-          {
-            title: '标准化',
-            ref: 't1-3',
-            level: 2
-          },
-          {
-            title: '概论',
-            ref: 't2'
-          },
-          {
-            title: '特性',
-            ref: 't3'
-          },
-          {
-            title: '指令式与结构化',
-            ref: 't3-1',
-            level: 2
-          },
-          {
-            title: '动态化',
-            ref: 't3-2',
-            level: 2
-          },
-          {
-            title: 'Eval()',
-            ref: 't3-2-1',
-            level: 3
-          },
-          {
-            title: '编程',
-            ref: 't4'
-          },
-          {
-            title: '实例',
-            ref: 't5'
-          },
-          {
-            title: '版本',
-            ref: 't6'
-          },
-          
-        ]
-
-      },
+        openDomWatch: true,
+        // 自定义title 标签 ,目前只支持containerElementSelector直接子级
+        headList: ["h1", "h2", "h3"],
+        title: "目录",
+        // list:[
+        //   {
+        //     // title: '历史',
+        //     ref: 't1'
+        //   },
+        //   {
+        //     // title: '肇始于网景',
+        //     ref: 't1-1',
+        //     level: 2
+        //   },
+        //   {
+        //     // title: '微软采纳',
+        //     ref: 't1-2',
+        //     level: 2
+        //   },
+        //   {
+        //     // title: '标准化',
+        //     ref: 't1-3',
+        //     level: 2
+        //   },
+        //   {
+        //     // title: '概论',
+        //     ref: 't2'
+        //   },
+        //   {
+        //     // title: '特性',
+        //     ref: 't3'
+        //   },
+        //   {
+        //     // title: '指令式与结构化',
+        //     ref: 't3-1',
+        //     level: 2
+        //   },
+        //   {
+        //     // title: '动态化',
+        //     ref: 't3-2',
+        //     level: 2
+        //   },
+        //   {
+        //     // title: 'Eval()',
+        //     ref: 't3-2-1',
+        //     level: 3
+        //   },
+        //   {
+        //     // title: '编程',
+        //     ref: 't4'
+        //   },
+        //   {
+        //     // title: '实例',
+        //     ref: 't5'
+        //   },
+        //   {
+        //     // title: '版本',
+        //     ref: 't6'
+        //   },
+        // ]
+      }
     };
   },
-  methods:{
-    titleClick(ref){
-      console.log('click', ref);
-      
+  methods: {
+    titleClick(ref) {
+      console.log("click", ref);
     }
   }
 };
 </script>
 
 <style>
-.demo{
+.demo {
   width: 700px;
   padding: 20px;
   line-height: 1.5;
-  border:1px solid;
+  border: 1px solid;
 }
-p{
+p {
   text-indent: 2em;
+}
+.wikitable {
+    background-color: #f8f9fa;
+    color: #222;
+    margin: 1em 0;
+    border: 1px solid #a2a9b1;
+    border-collapse: collapse;
+}
+.wikitable > tr > th, .wikitable > * > tr > th {
+    background-color: #eaecf0;
+    text-align: center;
+}
+.wikitable > tr > th, .wikitable > tr > td, .wikitable > * > tr > th, .wikitable > * > tr > td {
+    border: 1px solid #a2a9b1;
+    padding: 0.2em 0.4em;
 }
 /* h2{
   height: 1000px;

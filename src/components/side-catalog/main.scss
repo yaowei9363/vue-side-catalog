@@ -2,14 +2,14 @@
   width:260px;
   &__title{
     position: absolute;
-    left: 8px;
+    left: 13px;
     top: -30px;;
   }
   &::before {
     content: "";
     position: absolute;
     top: 0;
-    left: 12px;
+    left: 17px;
     bottom: 0;
     width: 1px;
     background-color: #ebedef;

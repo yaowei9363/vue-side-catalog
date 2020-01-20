@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="show"
     class="side-catalog"
     :style="{
       'right': right,
@@ -11,7 +12,7 @@
   >
     <div class="side-catalog__title">{{title}}</div>
     <div
-      v-for="(item) in list"
+      v-for="(item) in catalogList"
       :key="item.ref"
       :style="{'padding-left': getTitleMargin(item.level)}"
       class="side-catalog__item"
@@ -39,38 +40,38 @@
   </div>
 </template>
 <script>
-import debounce from 'lodash.debounce';
-import throttle from 'lodash.throttle';
+import debounce from "lodash.debounce";
+import throttle from "lodash.throttle";
 export default {
-  name: 'SideCatalog',
+  name: "SideCatalog",
   props: {
-    title:{
+    title: {
       type: String,
-      default: '',
+      default: ""
     },
-    isFixed:{
+    isFixed: {
       type: Boolean,
       default: true
     },
     right: {
       type: String,
-      default: '100px',
+      default: "100px"
     },
     top: {
       type: String,
-      default: '100px',
+      default: "100px"
     },
     left: {
       type: String,
-      default: 'initial',
+      default: "initial"
     },
     bottom: {
       type: String,
-      default: 'initial',
+      default: "initial"
     },
     list: {
       type: Array,
-      required: true,
+      // required: true,
       default() {
         return [
           // {
@@ -79,29 +80,43 @@ export default {
           //   level: 1,  //默认为1
           // },
         ];
-      },
+      }
     },
     // 是否开启dom监听,dom有变化主动更新各个ref的offsetTop值
     openDomWatch: {
       type: Boolean,
-      default: false,
+      default: false
     },
     // 绑定scroll事件的dom的class
     // 该元素必须为定位元素或者最近的 table,td,th,body
     scrollElementSelector: {
       type: String,
-      default: '',
+      default: ""
     },
+    containerElementSelector: {
+      type: String,
+      required: true
+      // default: ""
+    },
+    headList: {
+      type: Array,
+      default() {
+        return ["h2", "h3", "h4", "h5"];
+      }
+    }
   },
   data() {
     return {
-      active: '',
-      refTopMap:{},
+      active: "",
+      refTopMap: {},
       refTopList: [],
+      catalogList: [],
+      reverseCatalogList: [],
       refList: [],
       isBeforeDestroy: false,
       observer: null,
-      isClick: false
+      isClick: false,
+      show: false
     };
   },
   computed: {
@@ -110,54 +125,50 @@ export default {
         ? document.querySelector(this.scrollElementSelector)
         : window;
     },
-    scrollToEle(){
+    scrollToEle() {
       return this.scrollElementSelector
         ? this.scrollElement
         : document.documentElement;
     }
-
   },
-  mounted() {
-    this.initActive();
+  async mounted() {
+    await this.setCatalogList();
     this.setOffsetParent();
-    this.setRefList();
-    this.scrollElement.addEventListener('scroll', throttle(this.scrollHandle, 200));
-    this.$nextTick(() => {
-      setTimeout(() => {
-        if(this.openDomWatch) {
-        // 设置dom监听
-          this.observer = new MutationObserver(debounce(this.setRefList, 700));
-          this.observer.observe(this.scrollElement, {
-            childList: true,
-            subtree: true,
-          });
-        }
-      }, 500);
-    });
+    this.initActive();
+    this.show = true;
+    this.scrollElement.addEventListener(
+      "scroll",
+      throttle(this.scrollHandle, 200)
+    );
+    // this.$nextTick(() => {
+    setTimeout(() => {
+      this.setWatcher();
+    }, 500);
+    // });
   },
   beforeDestroy() {
-    if(this.openDomWatch) {
-      // beforeDestroy时,解绑dom监听之前,偶尔会触发observer监听的setRefList函数
+    if (this.openDomWatch) {
+      // beforeDestroy时,解绑dom监听之前,偶尔会触发observer监听的setCatalogList函数
       // 导致报错,需要用变量控制
       this.isBeforeDestroy = true;
       // 解绑dom监听
       this.observer.disconnect();
     }
-    this.scrollElement.removeEventListener('scroll', this.scrollHandle);
+    this.scrollElement.removeEventListener("scroll", this.scrollHandle);
   },
   methods: {
     // 点击title
     anchorActive(ref) {
-      if(this.active === ref) return;
+      if (this.active === ref) return;
       // 点击title 会触发scroll事件,在内容高度不够的情况下点击的title和active的title会有出入
       // 所以点击的时候先return掉scroll事件
       this.isClick = true;
       this.scrollToEle.scrollTop = this.refTopMap[ref];
       this.active = ref;
-      setTimeout(()=>{
+      setTimeout(() => {
         this.isClick = false;
-      },150);
-      this.$emit('title-click', ref);
+      }, 150);
+      this.$emit("title-click", ref);
     },
     // 获取ref的dom
     getRefDom(_ref) {
@@ -169,61 +180,114 @@ export default {
        * 4. ref不在循环中, ref不是vue实例 => ref.$el
        */
       const ref = this.$parent.$refs[_ref];
-      if(Array.isArray(ref)) {
+      if (Array.isArray(ref)) {
         return this.vueOrDom(ref[0]);
       }
       return this.vueOrDom(ref);
     },
     // ref 是vue还是dom
     vueOrDom(ref) {
-      if(ref instanceof HTMLElement) return ref;
-      if(ref._isVue) return ref.$el;
+      if (ref instanceof HTMLElement) return ref;
+      if (ref._isVue) return ref.$el;
     },
     // 获取ref offsetTop数组
-    setRefList() {
-      if(this.isBeforeDestroy) return;
-      this.refList = [];
-      this.refTopList = [];
-      this.list.forEach((item) => {
-        const offsetTop = this.getRefDom(item.ref).offsetTop;        
-        this.refList.unshift(item.ref);      
-        this.refTopList.unshift(offsetTop);
-        this.refTopMap[item.ref] = offsetTop;
-      });
+    setCatalogList() {
+      if (this.isBeforeDestroy) return;
+      this.catalogList = [];
+      if (this.list.length) {
+        this.catalogForList();
+      } else {
+        this.catalogForDom();
+      }
+      this.reverseCatalogList = JSON.parse(
+        JSON.stringify(this.catalogList)
+      ).reverse();
     },
     // scroll事件
     scrollHandle(e) {
-      if(this.isClick) return; 
-      const scrollTop = this.scrollElementSelector ? e.target.scrollTop : document.documentElement.scrollTop;
-      if(scrollTop===0) {
+      if (this.isClick) return;
+      const scrollTop = this.scrollElementSelector
+        ? e.target.scrollTop
+        : document.documentElement.scrollTop;
+      if (scrollTop === 0) {
         this.initActive();
+        return;
       }
-      this.refTopList.some((item, index) => {
-        if(scrollTop >= item) {
-          this.active = this.refList[index];
+      this.reverseCatalogList.some(item => {
+        if (scrollTop >= item.offsetTop) {
+          this.active = item.ref;
           return true;
         }
         return false;
       });
     },
     initActive() {
-      this.active = this.list[0].ref;
+      // this.active = this.list[0].ref;
+      this.active = this.catalogList[0].ref;
     },
     getTitleMargin(level) {
-      return level ? `${parseInt(level, 10) * 15}px` : '10px';
+      return level ? `${parseInt(level, 10) * 15}px` : "10px";
     },
     // 需要为scrollElement设置相对定位(offsetParent)
     // offsetParent(定位元素或者最近的 table,td,th,body)
-    setOffsetParent(){
-      if(!this.scrollElementSelector) return;
+    setOffsetParent() {
+      if (!this.scrollElementSelector) return;
       const ele = document.querySelector(this.scrollElementSelector);
-      if(ele.style.position) return;
-      ele.style.position = 'relative';      
+      if (ele.style.position) return;
+      ele.style.position = "relative";
     },
-    isChildren(level){
-      return level && level>1;
+    isChildren(level) {
+      return level && level > 1;
+    },
+    setWatcher() {
+      if (this.openDomWatch) {
+        // 设置dom监听
+        this.observer = new MutationObserver(debounce(this.setCatalogList, 700));
+        this.observer.observe(
+          document.querySelector(this.containerElementSelector),
+          {
+            childList: true,
+            subtree: true,
+            attributes: true
+          }
+        );
+      }
+    },
+    catalogForList() {
+      this.list.forEach(item => {
+          const offsetTop = this.getRefDom(item.ref).offsetTop;
+          const title = this.getRefDom(item.ref).innerText;
+          this.catalogList.push({
+            ref: item.ref,
+            title,
+            offsetTop,
+            level: item.level
+          });
+          this.refTopMap[item.ref] = offsetTop;
+        });
+    },
+    catalogForDom(){
+      let headlevel = {};
+        this.headList.forEach((item, index) => {
+          headlevel[item] = index + 1;
+        });
+        const childrenList = Array.from(
+          document.querySelectorAll(`${this.containerElementSelector}>*`)
+        );
+        childrenList.forEach((item, index) => {
+          const nodeName = item.nodeName.toLowerCase();
+          if (this.headList.includes(nodeName)) {
+            this.catalogList.push({
+              ref: `${item.nodeName}-${index}`,
+              title: item.innerText,
+              offsetTop: item.offsetTop,
+              level: headlevel[nodeName]
+            });
+            this.refTopMap[`${item.nodeName}-${index}`] = item.offsetTop;
+          }
+        });
     }
-  },
+  }
 };
 </script>
 <style scoped lang="scss" src="./main.scss"></style>
