@@ -2,15 +2,10 @@
   <div
     v-if="show"
     class="side-catalog"
-    :style="{
-      'right': right,
-      'top': top,
-      'left': left,
-      'bottom': bottom,
-      'position': isFixed? 'fixed' : 'initial'
-    }"
   >
-    <div class="side-catalog__title">{{title}}</div>
+    <div class="side-catalog__title">
+      <slot></slot>
+    </div>
     <div
       v-for="(item) in catalogList"
       :key="item.ref"
@@ -45,33 +40,8 @@ import throttle from "lodash.throttle";
 export default {
   name: "SideCatalog",
   props: {
-    title: {
-      type: String,
-      default: ""
-    },
-    isFixed: {
-      type: Boolean,
-      default: true
-    },
-    right: {
-      type: String,
-      default: "100px"
-    },
-    top: {
-      type: String,
-      default: "100px"
-    },
-    left: {
-      type: String,
-      default: "initial"
-    },
-    bottom: {
-      type: String,
-      default: "initial"
-    },
-    list: {
+    refList: {
       type: Array,
-      // required: true,
       default() {
         return [
           // {
@@ -112,7 +82,6 @@ export default {
       refTopList: [],
       catalogList: [],
       reverseCatalogList: [],
-      refList: [],
       isBeforeDestroy: false,
       observer: null,
       isClick: false,
@@ -132,8 +101,8 @@ export default {
     }
   },
   async mounted() {
+    await this.setOffsetParent();
     await this.setCatalogList();
-    this.setOffsetParent();
     this.initActive();
     this.show = true;
     this.scrollElement.addEventListener(
@@ -194,7 +163,7 @@ export default {
     setCatalogList() {
       if (this.isBeforeDestroy) return;
       this.catalogList = [];
-      if (this.list.length) {
+      if (this.refList.length) {
         this.catalogForList();
       } else {
         this.catalogForDom();
@@ -222,11 +191,11 @@ export default {
       });
     },
     initActive() {
-      // this.active = this.list[0].ref;
+      // this.active = this.refList[0].ref;
       this.active = this.catalogList[0].ref;
     },
     getTitleMargin(level) {
-      return level ? `${parseInt(level, 10) * 15}px` : "10px";
+      return level ? `${parseInt(level, 10) * 15}px` : "15px";
     },
     // 需要为scrollElement设置相对定位(offsetParent)
     // offsetParent(定位元素或者最近的 table,td,th,body)
@@ -254,9 +223,9 @@ export default {
       }
     },
     catalogForList() {
-      this.list.forEach(item => {
+      this.refList.forEach(item => {
           const offsetTop = this.getRefDom(item.ref).offsetTop;
-          const title = this.getRefDom(item.ref).innerText;
+          const title =  item.title ||  this.getRefDom(item.ref).innerText;
           this.catalogList.push({
             ref: item.ref,
             title,
@@ -285,7 +254,7 @@ export default {
             });
             this.refTopMap[`${item.nodeName}-${index}`] = item.offsetTop;
           }
-        });
+        });        
     }
   }
 };

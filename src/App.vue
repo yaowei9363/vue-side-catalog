@@ -304,12 +304,15 @@
           </tr>
         </tbody>
       </table>
-      <!-- <version ref="t6"/>  -->
+      <!-- <div>
+        <version ref="t4"/> 
+      </div> -->
     </div>
     <side-catalog
+      class="side-catalog"
       v-bind="catalogProps"
-      @title-click="titleClick"
     >
+      目录
     </side-catalog>
   </div>
 </template>
@@ -320,98 +323,85 @@ import SideCatalog from "./components/side-catalog/main.vue";
 export default {
   name: "app",
   components: {
-    SideCatalog
-    // Version,
+    SideCatalog,
+    // Version
   },
   data() {
     return {
       catalogProps: {
-        // right: '100px',
-        // top: '100px',
         // scrollElementSelector: '.demo',
         // 内容容器selector(必需)
         containerElementSelector: '.demo',
-        // isFixed: false,
         openDomWatch: true,
         // 自定义title 标签 ,目前只支持containerElementSelector直接子级
-        headList: ["h1", "h2", "h3"],
-        title: "目录",
-        // list:[
+        // headList: ["h1", "h2", "h3", "h4"],
+        // refList:[
         //   {
-        //     // title: '历史',
         //     ref: 't1'
         //   },
         //   {
-        //     // title: '肇始于网景',
         //     ref: 't1-1',
         //     level: 2
         //   },
         //   {
-        //     // title: '微软采纳',
         //     ref: 't1-2',
         //     level: 2
         //   },
         //   {
-        //     // title: '标准化',
         //     ref: 't1-3',
         //     level: 2
         //   },
         //   {
-        //     // title: '概论',
         //     ref: 't2'
         //   },
         //   {
-        //     // title: '特性',
         //     ref: 't3'
         //   },
         //   {
-        //     // title: '指令式与结构化',
         //     ref: 't3-1',
         //     level: 2
         //   },
         //   {
-        //     // title: '动态化',
         //     ref: 't3-2',
         //     level: 2
         //   },
         //   {
-        //     // title: 'Eval()',
         //     ref: 't3-2-1',
         //     level: 3
         //   },
         //   {
-        //     // title: '编程',
-        //     ref: 't4'
+        //     ref: 't4',
         //   },
         //   {
-        //     // title: '实例',
         //     ref: 't5'
         //   },
         //   {
-        //     // title: '版本',
         //     ref: 't6'
         //   },
         // ]
       }
     };
   },
-  methods: {
-    titleClick(ref) {
-      console.log("click", ref);
-    }
-  }
 };
 </script>
 
 <style>
 .demo {
   width: 700px;
+  overflow: auto;
   padding: 20px;
   line-height: 1.5;
+  /* height: 400px; */
   border: 1px solid;
+  margin-top: 100px;
 }
 p {
   text-indent: 2em;
+}
+.side-catalog{
+  position: fixed;
+  top: 100px;
+  right:100px;
 }
 .wikitable {
     background-color: #f8f9fa;
@@ -428,7 +418,4 @@ p {
     border: 1px solid #a2a9b1;
     padding: 0.2em 0.4em;
 }
-/* h2{
-  height: 1000px;
-} */
 </style>
