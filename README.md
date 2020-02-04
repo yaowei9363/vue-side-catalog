@@ -172,7 +172,7 @@ export default {
 | Name | Parameters | Description |
 | --- | --- | --- |
 | initActive | - | 使目录第一行处于active状态 |
-| setRefList | - | 计算目录各行的offsetTop |
+| setRefList | - | 计算每级目录的offsetTop |
 
 ## Slot
 | Name | Description |
