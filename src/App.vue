@@ -318,7 +318,9 @@
 </template>
 
 <script>
-import SideCatalog from "./components/side-catalog/main.vue";
+import "vue-side-catalog/lib/vue-side-catalog.css";
+import SideCatalog from "vue-side-catalog";
+// import SideCatalog from "./components/main.vue";
 // import Version from './components/Version';
 export default {
   name: "app",

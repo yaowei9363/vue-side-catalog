@@ -1,6 +1,6 @@
 {
   "name": "vue-side-catalog",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A Catalog Component for Vue.js.",
   "private": false,
   "main": "lib/vue-side-catalog.umd.min",
@@ -8,13 +8,14 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lib": "vue-cli-service build --target lib --name vue-side-catalog --dest lib ./src/components/index.js",
+    "lib": "vue-cli-service build --target lib --name vue-side-catalog --dest lib ./index.js",
     "lint": "vue-cli-service lint"
   },
   "files": [
     "lib",
     "packages"
   ],
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git@github.com:yaowei9363/vue-side-catalog.git"
@@ -36,13 +37,14 @@
     "@vue/cli-plugin-eslint": "^4.1.0",
     "@vue/cli-service": "^4.1.0",
     "babel-eslint": "^10.0.3",
-    "vue": "^2.6.10",
     "core-js": "^3.4.4",
     "eslint": "^5.16.0",
-    "eslint-plugin-vue": "^5.0.0",
     "eslint-plugin-html": "^6.0.0",
+    "eslint-plugin-vue": "^5.0.0",
     "node-sass": "^4.13.0",
     "sass-loader": "^8.0.2",
+    "vue": "^2.6.10",
+    "vue-side-catalog": "^1.0.3",
     "vue-template-compiler": "^2.6.10"
   },
   "eslintConfig": {

@@ -1,12 +1,12 @@
 # vue-side-catalog
-一个基于vue的侧边目录组件。
+A vue-based side catalog component.
 ![image](http://p0.qhimg.com/t01bf25e62a31fa762a.png)
 
-## 安装
+## Install
 ```
 npm install vue-side-catalog -S
 ```
-## 开始
+## Start
 ```
 <template>
  <div id="app">
@@ -39,38 +39,44 @@ export default {
   },
 }
 ```
-> 注意： **`containerElementSelector`** 属性是必需的，指定文章的容器。
+> Note： The **`containerElementSelector`** attribute is required and specifies the container of the article.
 
-效果如下图：
+The effect is as follows：
 ![image](http://p2.qhimg.com/t0182cb51aeaebaace0.png)
 
-## 示例
+## Examples
 
-### 自定义目录标签
-组件默认会把`containerElementSelector`元素的直接子集的`header`标签作为目录内容,
-对应规则为：
-`h2` => `一级目录`
-`h3` => `二级目录`
-`h4` => `三级目录`
-`h5` => `四级目录`
-要修改这一规则可以使用 **`headList`** 属性，这个属性的默认值为`["h2", "h3", "h4", "h5"]`对应上述规则
-> 注意：自定义题目标签目前只支持`containerElementSelector`元素的直接子集的html标签
+### Custom catalog labels
+By default, the component will use the `header` tag of a direct subset of the` containerElementSelector` element as the directory content.,
+The corresponding rule is:
+
+* `h2` => `First level directory`
+
+* `h3` => `Secondary directory`
+
+* `h4` => `Tertiary directory`
+
+* `h5` => `Fourth level directory`
+
+To modify this rule, you can use the **`headList`** attribute. The default value of this attribute is` ["h2", "h3", "h4", "h5"] `corresponding to the above rule
+> Note: Custom title tags currently only support html tags that are a direct subset of the `containerElementSelector` element
 ```javascript
  data(){
     return {
       catalogProps:{
-        headList: ["h1", "h2", "h3", "h4", "h5"], // 使h1作为一级目录
-        // headList: ["h3", "h1", "p", "span"], // 指定不同的标签为目录
+        headList: ["h1", "h2", "h3", "h4", "h5"], // make h1 a first-level directory
+        // headList: ["h3", "h1", "p", "span"], // specifying different tags as directories
       },
     };
   },
 ```
-![h1为一级目录](http://p6.qhimg.com/t0158179ba213107601.png)
+h1 as first-level directory:
+![h1 as first-level directory](http://p6.qhimg.com/t0158179ba213107601.png)
 
 
-### 自定义目录元素
-跟上面的自定义目录标签不同，自定义目录元素可以支持`任意层级`的`含有ref属性的元素`，也可以支持组件
-需要用到 **`refList`** 属性
+### Custom catalog elements
+Unlike the custom directory tags above, custom directory elements can support `elements with ref attributes` of` any level`, as well as components
+Requires **`refList`** properties
 
 ```
 <template>
@@ -103,7 +109,7 @@ export default {
           },
           {
             ref: 't1-1',
-            level: 2 // 指定为二级目录
+            level: 2 // designated as a secondary directory
           },
           {
             ref: 't1-2',
@@ -121,7 +127,7 @@ export default {
           },
           {
             ref: 't4',
-            title: '版本' // 组件需要单独设置title(默认取innerText)
+            title: '版本' // the component needs to set the title separately (the innerText is taken by default)
           },
         ]
       },
@@ -130,13 +136,12 @@ export default {
 }
 ```
 
-效果如下图： 
+The effect is as follows:
 ![image](http://p9.qhimg.com/t01108c4316caf3f010.png)
 
-> 注意：**`headList`** 和 **`refList`** 同时设置的话，会忽视**`headList`**
-### 指定元素滚动
-也可以使用 **`scrollElementSelector`** 对固定元素的内容生成目录，如果不指定该属性则默认监听`Window`的scroll事件
-
+> Note: If **`headList`** and **`refList`** are set at the same time, **`headList`** will be ignored.
+### Specify element scroll
+You can also use **`scrollElementSelector`** to generate a directory for the content of a fixed element. If this attribute is not specified, the scroll event of` Window` is listened to by default.
 ```javascript
  data(){
     return {
@@ -155,26 +160,26 @@ export default {
 效果如下图：
 ![image](http://p9.qhimg.com/t01a99edbab87553234.png)
 
-## 在线示例
-[点击这里](https://codesandbox.io/s/vue-side-catalog-ynw1i)
+## Online example
+[click me](https://codesandbox.io/s/vue-side-catalog-ynw1i)
 ## Props
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| headList | `Array` | `["h2", "h3", "h4", "h5"]` | 为每级目录指定标签 |
-| refList | `Array` | - | 为每级目录指定ref元素，数组每项为对象,包含两个属性<ul><li>`ref`（**必需**）该行目录对象的refName</li><li>`title`该行目录的名称（默认取innerText）</li><li>`level`(默认为1)该行目录级别</li></ul> |
-| containerElementSelector | `String` | - | **（必需）**指定文章的容器 |
-| scrollElementSelector | `String` | `Window` | 需要添加scroll事件的css选择器，默认监听`window`的scroll事件 |
-| openDomWatch | `Boolean` | false | 是否开启dom监听，如果`containerElementSelector`中有dom变化会重新计算每个ref的offsetTop |
+| headList | `Array` | `["h2", "h3", "h4", "h5"]` | Assign tags to each level of the directory |
+| refList | `Array` | - | Specify the ref element for each level of the directory, each item of the array is an object, and contains two attributes<ul><li>`ref`（**essential**）RefName of the row directory object</li><li>`title`The name of the line directory (defaults to innerText)</li><li>`level`(Default is 1) the line directory level</li></ul> |
+| containerElementSelector | `String` | - | （**essential**）Specify the container for the article |
+| scrollElementSelector | `String` | `Window` | Need to add a CSS selector for the scroll event, and listen to the scroll event of the `Window` by default |
+| openDomWatch | `Boolean` | false | Whether to enable dom monitoring. If there is a dom change in `containerElementSelector`, the offsetTop of each ref will be recalculated. |
 
 ## Methods
 
 | Name | Parameters | Description |
 | --- | --- | --- |
-| initActive | - | 使目录第一行处于active状态 |
-| setRefList | - | 计算每级目录的offsetTop |
+| initActive | - | Make the first line of the directory active |
+| setRefList | - | Calculate the offsetTop of each level directory |
 
 ## Slot
 | Name | Description |
 | --- | --- |
-| - | 目录的题目 |
+| - | Title of Directory |
