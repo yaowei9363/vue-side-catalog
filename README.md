@@ -1,4 +1,5 @@
 # vue-side-catalog
+[中文文档](https://github.com/yaowei9363/vue-side-catalog/blob/master/README.zh-CN.md)
 A vue-based side catalog component.
 ![image](http://p0.qhimg.com/t01bf25e62a31fa762a.png)
 
