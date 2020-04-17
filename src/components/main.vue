@@ -109,11 +109,9 @@ export default {
       "scroll",
       throttle(this.scrollHandle, 200)
     );
-    // this.$nextTick(() => {
     setTimeout(() => {
       this.setWatcher();
     }, 500);
-    // });
   },
   beforeDestroy() {
     if (this.openDomWatch) {
@@ -190,8 +188,8 @@ export default {
         return false;
       });
     },
-    initActive() {
-      // this.active = this.refList[0].ref;
+    initActive() {      
+      if(!this.catalogList.length) return;
       this.active = this.catalogList[0].ref;
     },
     getTitleMargin(level) {

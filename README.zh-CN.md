@@ -43,6 +43,7 @@ export default {
 > 注意： **`containerElementSelector`** 属性是必需的，指定文章的容器。
 
 效果如下图：
+
 ![image](http://p2.qhimg.com/t0182cb51aeaebaace0.png)
 
 ## 示例
@@ -75,7 +76,7 @@ h1作为一级目录：
 跟上面的自定义目录标签不同，自定义目录元素可以支持`任意层级`的`含有ref属性的元素`，也可以支持组件
 需要用到 **`refList`** 属性
 
-```
+```javascript
 <template>
     <h1>JavaScript</h1>
     <h2 ref="t1">历史</h2>

@@ -9,7 +9,7 @@ A vue-based side catalog component.
 npm install vue-side-catalog -S
 ```
 ## Start
-```
+```javascript
 <template>
  <div id="app">
    <div class="demo">
@@ -73,6 +73,7 @@ To modify this rule, you can use the **`headList`** attribute. The default value
   },
 ```
 h1 as first-level directory:
+
 ![h1 as first-level directory](http://p6.qhimg.com/t0158179ba213107601.png)
 
 
@@ -80,7 +81,7 @@ h1 as first-level directory:
 Unlike the custom directory tags above, custom directory elements can support `elements with ref attributes` of` any level`, as well as components
 Requires **`refList`** properties
 
-```
+```html
 <template>
     <h1>JavaScript</h1>
     <h2 ref="t1">历史</h2>
@@ -159,7 +160,7 @@ You can also use **`scrollElementSelector`** to generate a directory for the con
   overflow: auto;
 }
 ```
-效果如下图：
+The effect is as follows:：
 ![image](http://p9.qhimg.com/t01a99edbab87553234.png)
 
 ## Online example

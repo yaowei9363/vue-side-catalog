@@ -309,6 +309,7 @@
       </div> -->
     </div>
     <side-catalog
+      ref="catalog"
       class="side-catalog"
       v-bind="catalogProps"
     >
@@ -328,8 +329,18 @@ export default {
     SideCatalog,
     // Version
   },
+  mounted(){
+    // setTimeout(()=>{
+    //   this.vhtml=`
+    //     <h1>h1</h1>
+    //     <h2>h2</h2>
+    //     <h3>n3</h3>
+    //   `;    
+    // },2000);
+  },
   data() {
     return {
+      vhtml:'',
       catalogProps: {
         // scrollElementSelector: '.demo',
         // 内容容器selector(必需)
