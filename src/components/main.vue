@@ -6,31 +6,33 @@
     <div class="side-catalog__title">
       <slot></slot>
     </div>
-    <div
-      v-for="(item) in catalogList"
-      :key="item.ref"
-      :style="{'padding-left': getTitleMargin(item.level)}"
-      class="side-catalog__item"
-      @click="anchorActive(item.ref)"
-      :class="{
-          'side-catalog__item--child': isChildren(item.level)
-        }"
-    >
-      <i
-        class="side-catalog__item-icon"
+    <div class="side-catalog__list">
+      <div
+        v-for="(item) in catalogList"
+        :key="item.ref"
+        :style="{'padding-left': getTitleMargin(item.level)}"
+        class="side-catalog__list-item"
+        @click="anchorActive(item.ref)"
         :class="{
-          'side-catalog__item-icon--active': active===item.ref,
-          'side-catalog__item-icon--child': isChildren(item.level)
-        }"
-      />
-      <span
-        class="side-catalog__item-title"
-        :class="[
-          {'side-catalog__item-title--active': active===item.ref},
-          `side-catalog__item--level${item.level || 1}`
-        ]"
-        :title="item.title"
-      >{{ item.title }}</span>
+            'side-catalog__list-item--child': isChildren(item.level)
+          }"
+        >
+        <i
+          class="side-catalog__list-item-icon"
+          :class="{
+            'side-catalog__list-item-icon--child': isChildren(item.level)
+          }"
+          :style="active===item.ref ? {color: activeColor}: ''"
+        />
+        <span
+          class="side-catalog__list-item-title"
+          :class="[
+            `side-catalog__list-item--level${item.level || 1}`
+          ]"
+          :title="item.title"
+          :style="active===item.ref ? {color: activeColor}: ''"
+        >{{ item.title }}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -73,6 +75,10 @@ export default {
       default() {
         return ["h2", "h3", "h4", "h5"];
       }
+    },
+    activeColor: {
+      type: String,
+      default: '#006bff'
     }
   },
   data() {
