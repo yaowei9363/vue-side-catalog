@@ -11,7 +11,7 @@ assignees: ''
 I found a problem ...
 
 **The addresses of the codesandbox to reproduce the problem（复现问题的codesandbox地址）**
-Fork the example and reproduce the problem（fork该示例，并重现问题）
+Fork the example and reproduce the problem（fork[该示例](https://codesandbox.io/s/vue-side-catalog-template-19vq4?file=/src/App.vue)，并重现问题）
 e.g. https://codesandbox.io/s/vue-side-catalog-template-19vq4?file=/src/App.vue
 
 **Please complete the following information:**
