@@ -1,6 +1,6 @@
 {
   "name": "vue-side-catalog",
-  "version": "1.0.5",
+  "version": "2.0.1-beta",
   "description": "A Catalog Component for Vue.js.",
   "private": false,
   "main": "lib/vue-side-catalog.umd.min",
@@ -12,8 +12,7 @@
     "lint": "vue-cli-service lint"
   },
   "files": [
-    "lib",
-    "packages"
+    "lib"
   ],
   "license": "MIT",
   "repository": {

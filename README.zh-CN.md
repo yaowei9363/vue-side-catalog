@@ -1,26 +1,37 @@
 
 # vue-side-catalog
-一个基于vue的侧边目录组件。
-![image](http://p0.qhimg.com/t01bf25e62a31fa762a.png)
+
+[v1.0](https://github.com/yaowei9363/vue-side-catalog/blob/master/docs/v1.zh-CN.md)
+
+一个基于Vue的目录组件。
+![intro](http://ww1.sinaimg.cn/large/e8107c14ly1gg4udp1prhg20yp0lfe82.gif)
+
+[在线示例](https://codesandbox.io/s/vue-side-catalogv2-0xu99?file=/src/App.vue)
 
 ## 安装
 ```
 npm install vue-side-catalog -S
 ```
 ## 开始
-```
+```js
 <template>
  <div id="app">
-   <div class="demo">
+   <div id="demo">
       <h1>JavaScript</h1>
-      <h2>历史</h2>
-      <h3>肇始于网景</h3>
-      <h3>微软采纳</h3>
-      <h3>标准化</h3>
-      <h2>概论</h2>
-      <h2>特性</h2>
+      <h2>History</h2>
+      <h3>Creation at Netscape</h3>
+      <p>
+        The Mosaic web browser was released in 1993. 
+        As the first browser with a graphical user interface accessible to non-technical people, 
+        it played a prominent role in the rapid growth of the nascent World Wide Web
+      </p>
+      <h3>Adoption by Microsoft</h3>
+      <h3>The rise of JScript</h3>
+      <h2>Trademark</h2>
+      <h2>Website client-side usage</h2>
    </div>
   <side-catalog 
+    class="catalog"
     v-bind="catalogProps"
   ></side-catalog>
   </div>
@@ -34,151 +45,169 @@ export default {
   data() {
     return {
       catalogProps:{
-         containerElementSelector: '.demo',
+         container: '#demo',
       },
     };
   },
 }
+<style>
+  .catalog {
+    position: fixed;
+    top: 50px;
+    right: 50px;
+  }
+</style>
 ```
-> 注意： **`containerElementSelector`** 属性是必需的，指定文章的容器。
+> 注意： **`container`** 属性是必需的，指定文章的容器。
 
 效果如下图：
 
-![image](http://p2.qhimg.com/t0182cb51aeaebaace0.png)
+![start.png](http://ww1.sinaimg.cn/large/e8107c14ly1gg4v6a6jiij21yi17wgwl.jpg)
 
-## 示例
 
-### 自定义目录标签
-组件默认会把`containerElementSelector`元素的直接子集的`header`标签作为目录内容,
+## 自定义目录标签
+组件默认会把`container`元素的直接子集的`<h>`标签作为目录内容,
 对应规则为：
 * `h2` => `一级目录`
 * `h3` => `二级目录`
 * `h4` => `三级目录`
 * `h5` => `四级目录`
 
-要修改这一规则可以使用 **`headList`** 属性，这个属性的默认值为`["h2", "h3", "h4", "h5"]`对应上述规则
-> 注意：自定义题目标签目前只支持`containerElementSelector`元素的直接子集的html标签
-```javascript
+要修改这一规则可以使用 **`levelList`** 属性，这个属性的默认值为`["h2", "h3", "h4", "h5"]`对应上述规则
+> 注意：自定义题目标签目前只支持`container`元素的直接子元素的html标签
+```js
  data(){
     return {
       catalogProps:{
-        headList: ["h1", "h2", "h3", "h4", "h5"], // 使h1作为一级目录
-        // headList: ["h3", "h1", "p", "span"], // 指定不同的标签为目录
+        container: '#demo',
+        levelList: ["h1", "h2", "h3", "h4", "h5"], // 使h1作为一级目录
+        // levelList: ["h3", "h1", "p", "span"], // 指定不同的标签为目录
       },
     };
   },
 ```
-h1作为一级目录：
-![h1为一级目录](http://p6.qhimg.com/t0158179ba213107601.png)
+`h1`作为一级目录：
+
+![levelList.png](http://ww1.sinaimg.cn/large/e8107c14ly1gg4vmsa86sj21z218etk9.jpg)
 
 
-### 自定义目录元素
-跟上面的自定义目录标签不同，自定义目录元素可以支持`任意层级`的`含有ref属性的元素`，也可以支持组件
-需要用到 **`refList`** 属性
+## container内部滚动
+可以使用 **`innerScroll`** 属性指定scroll事件监听`container`，如果不指定该属性则默认监听`Window`
 
-```javascript
-<template>
-    <h1>JavaScript</h1>
-    <h2 ref="t1">历史</h2>
-    <h3 ref="t1-1">肇始于网景</h3>
-    <h3 ref="t1-2">微软采纳</h3>
-    <h3 ref="t1-3">标准化</h3>
-    <h2 ref="t2">概论</h2>
-    <h2 ref="t3">特性</h2>
-    <version ref="t4"/>
-    <!-- ... -->
-</template>
-```
-```javascript
-//...
-import Version from './components/Version';
-export default {
-  components: {
-    // ...
-    Version,
-  },
-  data() {
-    return {
-      catalogProps:{
-         containerElementSelector: '.demo',
-         refList:[
-          {
-            ref: 't1'
-          },
-          {
-            ref: 't1-1',
-            level: 2 // 指定为二级目录
-          },
-          {
-            ref: 't1-2',
-            level: 2
-          },
-          {
-            ref: 't1-3',
-            level: 2
-          },
-          {
-            ref: 't2'
-          },
-          {
-            ref: 't3'
-          },
-          {
-            ref: 't4',
-            title: '版本' // 组件需要单独设置title(默认取innerText)
-          },
-        ]
-      },
-    };
-  },
-}
-```
-
-效果如下图： 
-![image](http://p9.qhimg.com/t01108c4316caf3f010.png)
-
-> 注意：**`headList`** 和 **`refList`** 同时设置的话，会忽视 **`headList`**
-### 指定元素滚动
-也可以使用 **`scrollElementSelector`** 对固定元素的内容生成目录，如果不指定该属性则默认监听`Window`的scroll事件
-
-```javascript
+```js
  data(){
     return {
       catalogProps:{
-        scrollElementSelector: '.demo',
+        container: '#demo',
+        innerScroll: true,
+        height: 'calc(100% - 20px)'
       },
     };
   },
 ```
-```
-.demo {
-  height: 400px;
-  overflow: auto;
-}
-```
+> 注意：如果目录过长，需要为目录设定固定高度才能自动滚动。可以使用`height`参数，或者外部直接添加css
+
 效果如下图：
-![image](http://p9.qhimg.com/t01a99edbab87553234.png)
+![innerScroll.gif](http://ww1.sinaimg.cn/large/e8107c14ly1gg5j10weung20z30lx4qr.gif)
 
-## 在线示例
-[点击这里](https://codesandbox.io/s/vue-side-catalog-ynw1i)
+[在线示例](https://codesandbox.io/s/vue-side-catalogv2innerscroll-t8j1o?file=/src/App.vue:31817-31860)
+
+
+## 自定义目录样式
+通过`slot`可以自定义每行目录或者图标
+
+### 自定义图标 
+这里使用了Iconfont的字体图标
+```js
+  <side-catalog 
+    class="catalog"
+    v-bind="catalogProps"
+  >
+    <template #default="{level, isActive}">
+      <i :class="['iconfont', isActive ? 'icon-smile' : 'icon-normal']"></i>
+    </template>
+  </side-catalog>
+```
+
+![icon.png](http://ww1.sinaimg.cn/large/e8107c14ly1gg5kemjevsj221018yh5t.jpg)
+
+[在线示例](https://codesandbox.io/s/vue-side-catalogv2slot-imwtq?file=/src/App.vue)
+
+---
+使用`iconLeft`参数使所有图标左对齐，`lineLeft`调整左侧线位置
+```js
+  <side-catalog 
+    class="catalog"
+    v-bind="catalogProps"
+  >
+    <template #default="{level, isActive}">
+      <i :class="['line-style', isActive ? 'line-style--active' : '']"></i>
+    </template>
+  </side-catalog>
+```
+```js
+ data(){
+    return {
+      catalogProps:{
+        container: "#demo",
+        iconLeft: true,
+        lineLeft: 0
+      },
+    };
+  },
+```
+```css
+.line-style {
+  display: inline-block;
+  height: 20px;
+  width: 3px;
+  background: transparent;
+}
+.line-style--active {
+  background: currentColor;
+}
+```
+![leftIcon.gif](http://ww1.sinaimg.cn/large/e8107c14ly1gg5rk4r2l6g20y50lvb2a.gif)
+
+[在线示例](https://codesandbox.io/s/vue-side-catalogv2lefticon-mbge4?file=/src/App.vue)
+
+### 自定义每行目录样式 
+```js
+  <side-catalog 
+    class="catalog"
+    v-bind="catalogProps"
+  >
+    <template #row="{level, isActive, title}">
+      // ...
+    </template>
+  </side-catalog>
+```
+
 ## Props
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| headList | `Array` | `["h2", "h3", "h4", "h5"]` | 为每级目录指定标签 |
-| refList | `Array` | - | 为每级目录指定ref元素，数组每项为对象,包含两个属性<ul><li>`ref`（**必需**）该行目录对象的refName</li><li>`title`该行目录的名称（默认取innerText）</li><li>`level`(默认为1)该行目录级别</li></ul> |
-| containerElementSelector | `String` | - | **（必需）**指定文章的容器 |
-| scrollElementSelector | `String` | `Window` | 需要添加scroll事件的css选择器，默认监听`window`的scroll事件 |
-| openDomWatch | `Boolean` | false | 是否开启dom监听，如果`containerElementSelector`中有dom变化会重新计算每个ref的offsetTop |
+| container | `String` | - | (**必要**)指定文章的容器 |
+| innerScroll | `Boolean` | `false` | 是否在容器内滚动 |
+| activeColor | `String` | `#006bff` | 处于当前目录时的颜色 |
+| levelGap | `Number` | 20 | 不同级别目录的偏移量 |
+| iconLeft | `Boolean` | `false` | 每级目录的图标是否左对齐，不跟随偏移量移动 |
+| lineLeft | `Number` | 22 | 目录左侧线的left值 |
+| lineShow | `Boolean` | `true` | 是否展示目录左侧线 |
+| title | `String` | - | 目录顶部标题 |
+| height | `String` | - | 目录的高，可设为css中height的值。当目录过长超出高度，会自动滚动到当前目录。当然也可使在父组件中直接设置height |
+| watch | `Boolean` | false | 是否开启dom监听，如果`container`中有dom变化会重新计算每级目录的offsetTop。例如折叠面板展开和收起等情况需要重新计算 |
+| levelList | `Array` | `["h2", "h3", "h4", "h5"]` | 为每级目录指定标签 |
 
 ## Methods
 
 | Name | Parameters | Description |
 | --- | --- | --- |
 | initActive | - | 使目录第一行处于active状态 |
-| setRefList | - | 计算每级目录的offsetTop |
+| setTopList | - | 计算每级目录的offsetTop，当文章和目录出现偏差不对应时，可以调用此方法重新计算 |
 
 ## Slot
 | Name | Description |
 | --- | --- |
-| - | 目录的题目 |
+| default | 自定义每行目录的图标，参数为`{level, isActive}` |
+| row | 自定义每行目录，参数为`{level, isActive, title}` |
