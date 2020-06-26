@@ -1,5 +1,5 @@
 # vue-side-catalog
-[中文文档](https://github.com/yaowei9363/vue-side-catalog/blob/master/README.zh-CN.md)
+[中文文档](https://github.com/yaowei9363/vue-side-catalog/blob/v2.0/README.zh-CN.md)
 
 [v1.0](https://github.com/yaowei9363/vue-side-catalog/blob/master/docs/v1.md)
 

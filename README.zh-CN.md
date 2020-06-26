@@ -1,7 +1,7 @@
 
 # vue-side-catalog
 
-[v1.0](https://github.com/yaowei9363/vue-side-catalog/blob/master/docs/v1.zh-CN.md)
+[v1.0](https://github.com/yaowei9363/vue-side-catalog/blob/v2.0/docs/v1.zh-CN.md)
 
 一个基于Vue的目录组件。
 ![intro](http://ww1.sinaimg.cn/large/e8107c14ly1gg4udp1prhg20yp0lfe82.gif)
