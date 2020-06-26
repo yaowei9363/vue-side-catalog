@@ -1,23 +1,31 @@
+@mixin ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
 .side-catalog {
-  // width:260px;
+  display: flex;
+  flex-direction: column;
   &__title{
     margin-bottom:5px;
     font-size: 16px;
-    // position: absolute;
-    // left: 13px;
-    // top: -30px;;
+    @include ellipsis;
   }
   &__list{
-    position: relative;
-    &::before {
-      content: "";
+    flex: 1;
+    overflow: hidden;
+    &>div{
+      position: relative;
+    }
+    &-line{
       position: absolute;
       top: 0;
-      left: 17px;
+      left: 22px;
       bottom: 0;
       width: 1px;
       background-color: #ebedef;
       opacity: .8;
+      z-index: -1;
     }
     &-item {
       cursor: pointer;
@@ -40,12 +48,6 @@
         border: 1px solid currentColor;
         border-radius: 50%;
         background: currentColor;
-  
-        // &--active {
-        //   color: #006bff;
-        //   border: 1px solid #006bff;
-        // }
-  
         &--child{
           width: 4px;
           height: 4px;
@@ -53,19 +55,15 @@
       }
   
       &-title {
-        color: #202020;
+        color: currentColor;
         flex: 1;
-        padding-left:10px;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        // &--active {
-        //   color: #006bff;
-        // }
+        padding-left:15px;
+        @include ellipsis;
+        &--level1{
+          font-weight: 700;
+        }
       }
-      &--level1{
-        font-weight: 700;
-      }
+
     }
   }
 }

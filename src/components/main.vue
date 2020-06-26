@@ -1,38 +1,71 @@
 <template>
   <div
-    v-if="show"
     class="side-catalog"
+    :style="{height}"
   >
-    <div class="side-catalog__title">
-      <slot></slot>
+    <div
+      v-if="title"
+      class="side-catalog__title"
+    >
+      {{title}}
     </div>
     <div class="side-catalog__list">
-      <div
-        v-for="(item) in catalogList"
-        :key="item.ref"
-        :style="{'padding-left': getTitleMargin(item.level)}"
-        class="side-catalog__list-item"
-        @click="anchorActive(item.ref)"
-        :class="{
+      <div>
+        <i
+          v-if="lineShow"
+          class="side-catalog__list-line"
+          :style="lineLeft!==undefined?{left:lineLeft+'px'}:''"
+        ></i>
+        <div
+          v-for="(item) in topList"
+          :key="item.ref"
+          :style="[
+          {'padding-left': iconLeft ? '0px' : getTitleMargin(item.level)},
+          active===item.ref ? {color: activeColor}: ''
+        ]"
+          class="side-catalog__list-item"
+          @click="activeAnchor(item.ref)"
+          :class="{
+            'side-catalog__list-item--active': active===item.ref,
             'side-catalog__list-item--child': isChildren(item.level)
           }"
         >
-        <i
-          class="side-catalog__list-item-icon"
-          :class="{
-            'side-catalog__list-item-icon--child': isChildren(item.level)
-          }"
-          :style="active===item.ref ? {color: activeColor}: ''"
-        />
-        <span
-          class="side-catalog__list-item-title"
-          :class="[
-            `side-catalog__list-item--level${item.level || 1}`
+          <!-- 每行插槽 -->
+          <slot
+            name="row"
+            v-bind:level="item.level"
+            v-bind:isActive="active===item.ref"
+            v-bind:title="item.title"
+          >
+            <!-- 每行icon插槽 -->
+            <slot
+              name="default"
+              v-bind:level="item.level"
+              v-bind:isActive="active===item.ref"
+            >
+              <i
+                class="side-catalog__list-item-icon"
+                :class="{
+              'side-catalog__list-item-icon--child': isChildren(item.level)
+            }"
+                :style="active===item.ref ? {color: activeColor}: ''"
+              />
+            </slot>
+            <span
+              class="side-catalog__list-item-title"
+              :class="[
+            `side-catalog__list-item-title--level${item.level || 1}`
           ]"
-          :title="item.title"
-          :style="active===item.ref ? {color: activeColor}: ''"
-        >{{ item.title }}</span>
+              :title="item.title"
+              :style="[
+            active===item.ref ? {color: activeColor}: '',
+            {'padding-left': iconLeft ?  getTitleMargin(item.level) : ''}
+            ]"
+            >{{ item.title }}</span>
+          </slot>
+        </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -55,22 +88,22 @@ export default {
       }
     },
     // 是否开启dom监听,dom有变化主动更新各个ref的offsetTop值
-    openDomWatch: {
+    watch: {
       type: Boolean,
       default: false
     },
     // 绑定scroll事件的dom的class
     // 该元素必须为定位元素或者最近的 table,td,th,body
-    scrollElementSelector: {
-      type: String,
-      default: ""
+    innerScroll: {
+      type: Boolean,
+      default: false
     },
-    containerElementSelector: {
+    container: {
       type: String,
       required: true
       // default: ""
     },
-    headList: {
+    levelList: {
       type: Array,
       default() {
         return ["h2", "h3", "h4", "h5"];
@@ -78,68 +111,90 @@ export default {
     },
     activeColor: {
       type: String,
-      default: '#006bff'
+      default: "#006bff"
+    },
+    height: {
+      type: String,
+      default: ""
+    },
+    levelGap: {
+      type: Number,
+      default: 20
+    },
+    iconLeft: {
+      type: Boolean,
+      default: false
+    },
+    title: {
+      type: String,
+      default: ""
+    },
+    lineLeft: {
+      type: Number,
+      default: 22
+    },
+    lineShow: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
     return {
       active: "",
       refTopMap: {},
-      refTopList: [],
-      catalogList: [],
-      reverseCatalogList: [],
+      topList: [],
+      reverseTopList: [],
       isBeforeDestroy: false,
       observer: null,
-      isClick: false,
-      show: false
+      itemClicking: false,
+      debounceIntoView: null,
+      throttleScroll: null,
     };
   },
   computed: {
     scrollElement() {
-      return this.scrollElementSelector
-        ? document.querySelector(this.scrollElementSelector)
-        : window;
+      return this.innerScroll ? document.querySelector(this.container) : window;
     },
     scrollToEle() {
-      return this.scrollElementSelector
-        ? this.scrollElement
-        : document.documentElement;
+      return this.innerScroll ? this.scrollElement : document.documentElement;
     }
   },
   async mounted() {
+    this.debounceIntoView = debounce(this.activeIntoView, 250);
+    this.throttleScroll = throttle(this.scrollHandle, 200);
     await this.setOffsetParent();
-    await this.setCatalogList();
+    await this.setTopList();
     this.initActive();
-    this.show = true;
-    this.scrollElement.addEventListener(
-      "scroll",
-      throttle(this.scrollHandle, 200)
-    );
+    this.scrollElement.addEventListener("scroll", this.throttleScroll);
+    if (!this.watch) return;
+    // 等待dom渲染完成之后监听
     setTimeout(() => {
       this.setWatcher();
     }, 500);
   },
   beforeDestroy() {
-    if (this.openDomWatch) {
-      // beforeDestroy时,解绑dom监听之前,偶尔会触发observer监听的setCatalogList函数
-      // 导致报错,需要用变量控制
-      this.isBeforeDestroy = true;
-      // 解绑dom监听
-      this.observer.disconnect();
-    }
-    this.scrollElement.removeEventListener("scroll", this.scrollHandle);
+    if (!this.watch) return;
+    // beforeDestroy时,解绑dom监听之前,会触发observer监听的setTopList函数
+    // 导致报错,需要用变量控制
+    this.isBeforeDestroy = true;
+    // 解绑dom监听
+    this.observer.disconnect();
+
+    this.scrollElement.removeEventListener("scroll", this.throttleScroll);
   },
   methods: {
     // 点击title
-    anchorActive(ref) {
+    activeAnchor(ref) {
       if (this.active === ref) return;
       // 点击title 会触发scroll事件,在内容高度不够的情况下点击的title和active的title会有出入
       // 所以点击的时候先return掉scroll事件
-      this.isClick = true;
+      this.itemClicking = true;
       this.scrollToEle.scrollTop = this.refTopMap[ref];
       this.active = ref;
+      this.debounceIntoView();
+      // 等待页面滚动完成
       setTimeout(() => {
-        this.isClick = false;
+        this.itemClicking = false;
       }, 150);
       this.$emit("title-click", ref);
     },
@@ -164,48 +219,73 @@ export default {
       if (ref._isVue) return ref.$el;
     },
     // 获取ref offsetTop数组
-    setCatalogList() {
+    setTopList() {
       if (this.isBeforeDestroy) return;
-      this.catalogList = [];
+      this.topList = [];
       if (this.refList.length) {
-        this.catalogForList();
+        this.topForList();
       } else {
-        this.catalogForDom();
+        this.topForDom();
       }
-      this.reverseCatalogList = JSON.parse(
-        JSON.stringify(this.catalogList)
+      this.reverseTopList = JSON.parse(
+        JSON.stringify(this.topList)
       ).reverse();
+      // this.scrollHeight = this.scrollToEle.scrollHeight;
     },
     // scroll事件
-    scrollHandle(e) {
-      if (this.isClick) return;
-      const scrollTop = this.scrollElementSelector
-        ? e.target.scrollTop
-        : document.documentElement.scrollTop;
+    scrollHandle() {
+      // 点击title的滚动不触发
+      if (this.itemClicking) return;
+      const { scrollTop, clientHeight, scrollHeight } = this.scrollToEle;
+      // 到达顶部
       if (scrollTop === 0) {
         this.initActive();
         return;
       }
-      this.reverseCatalogList.some(item => {
+      // 到达底部
+      if (scrollTop + clientHeight >= scrollHeight) {
+        this.initActive(true);
+        return;
+      }
+      this.reverseTopList.some(item => {
         if (scrollTop >= item.offsetTop) {
           this.active = item.ref;
+          this.debounceIntoView();
           return true;
         }
         return false;
       });
     },
-    initActive() {      
-      if(!this.catalogList.length) return;
-      this.active = this.catalogList[0].ref;
+    initActive(last) {
+      if (!this.topList.length) return;
+      const index = last ? this.topList.length - 1 : 0;
+      this.active = this.topList[index].ref;
+      this.debounceIntoView(true);
+    },
+    activeIntoView(edge) {
+      // 等active元素改变后
+      this.$nextTick(() => {
+        const activeEl = document.querySelector(
+          ".side-catalog__list-item--active"
+        );
+        if (!activeEl) return;
+        // 顶部或者底部 scrollIntoView为smooth时无效
+        activeEl.scrollIntoView({
+          block: "center",
+          behavior: edge ? "auto" : "smooth"
+        });
+      });
     },
     getTitleMargin(level) {
-      return level ? `${parseInt(level, 10) * 15}px` : "15px";
+      return level
+        ? `${parseInt(level, 10) * this.levelGap}px`
+        : this.levelGap + "px";
     },
     // 需要为scrollElement设置相对定位(offsetParent)
     // offsetParent(定位元素或者最近的 table,td,th,body)
     setOffsetParent() {
-      if (!this.scrollElementSelector) return;
-      const ele = document.querySelector(this.scrollElementSelector);
+      if (!this.innerScroll) return;
+      const ele = document.querySelector(this.container);
       if (ele.style.position) return;
       ele.style.position = "relative";
     },
@@ -213,54 +293,51 @@ export default {
       return level && level > 1;
     },
     setWatcher() {
-      if (this.openDomWatch) {
-        // 设置dom监听
-        this.observer = new MutationObserver(debounce(this.setCatalogList, 700));
-        this.observer.observe(
-          document.querySelector(this.containerElementSelector),
-          {
-            childList: true,
-            subtree: true,
-            attributes: true
-          }
-        );
-      }
+      // 设置dom监听
+      this.observer = new MutationObserver(debounce(this.setTopList, 700));
+      this.observer.observe(document.querySelector(this.container), {
+        childList: true,
+        subtree: true,
+        attributes: true
+      });
     },
-    catalogForList() {
+    // 根据refList获取catalogList
+    topForList() {
       this.refList.forEach(item => {
-          const offsetTop = this.getRefDom(item.ref).offsetTop;
-          const title =  item.title ||  this.getRefDom(item.ref).innerText;
-          this.catalogList.push({
-            ref: item.ref,
-            title,
-            offsetTop,
-            level: item.level
-          });
-          this.refTopMap[item.ref] = offsetTop;
+        const offsetTop = this.getRefDom(item.ref).offsetTop;
+        const title = item.title || this.getRefDom(item.ref).innerText;
+        this.topList.push({
+          ref: item.ref,
+          title,
+          offsetTop,
+          level: item.level
         });
+        this.refTopMap[item.ref] = offsetTop;
+      });
     },
-    catalogForDom(){
+    // 根据levelList获取catalogList
+    topForDom() {
       let headlevel = {};
-        this.headList.forEach((item, index) => {
-          headlevel[item] = index + 1;
-        });
-        const childrenList = Array.from(
-          document.querySelectorAll(`${this.containerElementSelector}>*`)
-        );
-        childrenList.forEach((item, index) => {
-          const nodeName = item.nodeName.toLowerCase();
-          if (this.headList.includes(nodeName)) {
-            this.catalogList.push({
-              ref: `${item.nodeName}-${index}`,
-              title: item.innerText,
-              offsetTop: item.offsetTop,
-              level: headlevel[nodeName]
-            });
-            this.refTopMap[`${item.nodeName}-${index}`] = item.offsetTop;
-          }
-        });        
+      this.levelList.forEach((item, index) => {
+        headlevel[item] = index + 1;
+      });
+      const childrenList = Array.from(
+        document.querySelectorAll(`${this.container}>*`)
+      );
+      childrenList.forEach((item, index) => {
+        const nodeName = item.nodeName.toLowerCase();
+        if (this.levelList.includes(nodeName)) {
+          this.topList.push({
+            ref: `${item.nodeName}-${index}`,
+            title: item.innerText,
+            offsetTop: item.offsetTop,
+            level: headlevel[nodeName]
+          });
+          this.refTopMap[`${item.nodeName}-${index}`] = item.offsetTop;
+        }
+      });
     }
   }
 };
 </script>
-<style scoped lang="scss" src="./main.scss"></style>
+<style lang="scss" src="./main.scss"></style>

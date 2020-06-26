@@ -1,8 +1,13 @@
 # vue-side-catalog
-[中文文档](https://github.com/yaowei9363/vue-side-catalog/blob/master/README.zh-CN.md)
+
+[中文文档](https://github.com/yaowei9363/vue-side-catalog/blob/v2.0/README.zh-CN.md)
+
+[v1.0](https://github.com/yaowei9363/vue-side-catalog/blob/v1.0/README.md)
 
 A vue-based side catalog component.
-![image](http://p0.qhimg.com/t01bf25e62a31fa762a.png)
+![intro](http://ww1.sinaimg.cn/large/e8107c14ly1gg4udp1prhg20yp0lfe82.gif)
+
+[online example](https://codesandbox.io/s/vue-side-catalogv2-0xu99?file=/src/App.vue)
 
 ## Install
 ```
@@ -12,16 +17,22 @@ npm install vue-side-catalog -S
 ```javascript
 <template>
  <div id="app">
-   <div class="demo">
+   <div id="demo">
       <h1>JavaScript</h1>
-      <h2>历史</h2>
-      <h3>肇始于网景</h3>
-      <h3>微软采纳</h3>
-      <h3>标准化</h3>
-      <h2>概论</h2>
-      <h2>特性</h2>
+      <h2>History</h2>
+      <h3>Creation at Netscape</h3>
+      <p>
+        The Mosaic web browser was released in 1993. 
+        As the first browser with a graphical user interface accessible to non-technical people, 
+        it played a prominent role in the rapid growth of the nascent World Wide Web
+      </p>
+      <h3>Adoption by Microsoft</h3>
+      <h3>The rise of JScript</h3>
+      <h2>Trademark</h2>
+      <h2>Website client-side usage</h2>
    </div>
   <side-catalog 
+    class="catalog"
     v-bind="catalogProps"
   ></side-catalog>
   </div>
@@ -35,154 +46,173 @@ export default {
   data() {
     return {
       catalogProps:{
-         containerElementSelector: '.demo',
+         container: '#demo',
       },
     };
   },
 }
+<style>
+  .catalog {
+    position: fixed;
+    top: 50px;
+    right: 50px;
+  }
+</style>
 ```
-> Note： The **`containerElementSelector`** attribute is required and specifies the container of the article.
+> Note： The **`container`** attribute is required and specifies the container of the article.
 
 The effect is as follows：
-![image](http://p2.qhimg.com/t0182cb51aeaebaace0.png)
 
-## Examples
+![start.png](http://ww1.sinaimg.cn/large/e8107c14ly1gg4v6a6jiij21yi17wgwl.jpg)
 
-### Custom catalog labels
-By default, the component will use the `header` tag of a direct subset of the` containerElementSelector` element as the directory content.,
+
+## Custom catalog labels
+By default, the component will use the `<h>` tag of a direct subset of the` container` element as the catalog content.,
 The corresponding rule is:
 
-* `h2` => `First level directory`
+* `h2` => `First level catalog`
 
-* `h3` => `Secondary directory`
+* `h3` => `Secondary catalog`
 
-* `h4` => `Tertiary directory`
+* `h4` => `Tertiary catalog`
 
-* `h5` => `Fourth level directory`
+* `h5` => `Fourth level catalog`
 
-To modify this rule, you can use the **`headList`** attribute. The default value of this attribute is` ["h2", "h3", "h4", "h5"] `corresponding to the above rule
-> Note: Custom title tags currently only support html tags that are a direct subset of the `containerElementSelector` element
+To modify this rule, you can use the **`levelList`** attribute. The default value of this attribute is` ["h2", "h3", "h4", "h5"] `corresponding to the above rule
+> Note: Custom title tags currently only support html tags that are a direct subset of the `container` element
 ```javascript
  data(){
     return {
       catalogProps:{
-        headList: ["h1", "h2", "h3", "h4", "h5"], // make h1 a first-level directory
-        // headList: ["h3", "h1", "p", "span"], // specifying different tags as directories
+        levelList: ["h1", "h2", "h3", "h4", "h5"], // make h1 a first-level catalog
+        // levelList: ["h3", "h1", "p", "span"], // specifying different tags as directories
       },
     };
   },
 ```
-h1 as first-level directory:
+h1 as first-level catalog:
 
-![h1 as first-level directory](http://p6.qhimg.com/t0158179ba213107601.png)
+![levelList.png](http://ww1.sinaimg.cn/large/e8107c14ly1gg4vmsa86sj21z218etk9.jpg)
 
-
-### Custom catalog elements
-Unlike the custom directory tags above, custom directory elements can support `elements with ref attributes` of` any level`, as well as components
-Requires **`refList`** properties
-
-```html
-<template>
-    <h1>JavaScript</h1>
-    <h2 ref="t1">历史</h2>
-    <h3 ref="t1-1">肇始于网景</h3>
-    <h3 ref="t1-2">微软采纳</h3>
-    <h3 ref="t1-3">标准化</h3>
-    <h2 ref="t2">概论</h2>
-    <h2 ref="t3">特性</h2>
-    <version ref="t4"/>
-    <!-- ... -->
-</template>
-```
-```javascript
-//...
-import Version from './components/Version';
-export default {
-  components: {
-    // ...
-    Version,
-  },
-  data() {
-    return {
-      catalogProps:{
-         containerElementSelector: '.demo',
-         refList:[
-          {
-            ref: 't1'
-          },
-          {
-            ref: 't1-1',
-            level: 2 // designated as a secondary directory
-          },
-          {
-            ref: 't1-2',
-            level: 2
-          },
-          {
-            ref: 't1-3',
-            level: 2
-          },
-          {
-            ref: 't2'
-          },
-          {
-            ref: 't3'
-          },
-          {
-            ref: 't4',
-            title: '版本' // the component needs to set the title separately (the innerText is taken by default)
-          },
-        ]
-      },
-    };
-  },
-}
-```
-
-The effect is as follows:
-![image](http://p9.qhimg.com/t01108c4316caf3f010.png)
-
-> Note: If **`headList`** and **`refList`** are set at the same time, **`headList`** will be ignored.
-### Specify element scroll
-You can also use **`scrollElementSelector`** to generate a directory for the content of a fixed element. If this attribute is not specified, the scroll event of` Window` is listened to by default.
+## Scrolling inside the container
+You can use the **`innerScroll`** attribute to specify the scroll event to listen for `container`, if you do not specify this attribute, the default is to listen for `Window`
 ```javascript
  data(){
     return {
       catalogProps:{
-        scrollElementSelector: '.demo',
+        container: '#demo',
+        innerScroll: true,
+        height: 'calc(100% - 20px)'
       },
     };
   },
 ```
-```
-.demo {
-  height: 400px;
-  overflow: auto;
-}
-```
+> Note：If the catalog is too long, you need to set a fixed height for the catalog to automatically scroll.You can use the `height` parameter, or add css directly from the outside
+
 The effect is as follows:：
-![image](http://p9.qhimg.com/t01a99edbab87553234.png)
 
-## Online example
-[click me](https://codesandbox.io/s/vue-side-catalog-ynw1i)
+![innerScroll.gif](http://ww1.sinaimg.cn/large/e8107c14ly1gg5j10weung20z30lx4qr.gif)
+
+[online example](https://codesandbox.io/s/vue-side-catalogv2innerscroll-t8j1o?file=/src/App.vue:31817-31860)
+
+## Customize catalog style
+
+You can customize each row of catalog or icon through `slot`
+
+### Custom icon
+ 
+`Iconfont` is used here
+
+```js
+  <side-catalog 
+    class="catalog"
+    v-bind="catalogProps"
+  >
+    <template #default="{level, isActive}">
+      <i :class="['iconfont', isActive ? 'icon-smile' : 'icon-normal']"></i>
+    </template>
+  </side-catalog>
+```
+
+![icon.png](http://ww1.sinaimg.cn/large/e8107c14ly1gg5kemjevsj221018yh5t.jpg)
+
+[online example](https://codesandbox.io/s/vue-side-catalogv2slot-imwtq?file=/src/App.vue)
+
+---
+Use the `iconLeft` parameter to align all icons to the left, and `lineLeft` to adjust the left line position
+
+```js
+  <side-catalog 
+    class="catalog"
+    v-bind="catalogProps"
+  >
+    <template #default="{level, isActive}">
+      <i :class="['line-style', isActive ? 'line-style--active' : '']"></i>
+    </template>
+  </side-catalog>
+```
+```js
+ data(){
+    return {
+      catalogProps:{
+        container: "#demo",
+        iconLeft: true,
+        lineLeft: 0
+      },
+    };
+  },
+```
+```css
+.line-style {
+  display: inline-block;
+  height: 20px;
+  width: 3px;
+  background: transparent;
+}
+.line-style--active {
+  background: currentColor;
+}
+```
+![leftIcon.gif](http://ww1.sinaimg.cn/large/e8107c14ly1gg5rk4r2l6g20y50lvb2a.gif)
+[online example](https://codesandbox.io/s/vue-side-catalogv2lefticon-mbge4?file=/src/App.vue)
+
+### Customize each line of catalog 
+```js
+  <side-catalog 
+    class="catalog"
+    v-bind="catalogProps"
+  >
+    <template #row="{level, isActive, title}">
+      // ...
+    </template>
+  </side-catalog>
+```
+
 ## Props
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| headList | `Array` | `["h2", "h3", "h4", "h5"]` | Assign tags to each level of the directory |
-| refList | `Array` | - | Specify the ref element for each level of the directory, each item of the array is an object, and contains two attributes<ul><li>`ref`（**essential**）RefName of the row directory object</li><li>`title`The name of the line directory (defaults to innerText)</li><li>`level`(Default is 1) the line directory level</li></ul> |
-| containerElementSelector | `String` | - | （**essential**）Specify the container for the article |
-| scrollElementSelector | `String` | `Window` | Need to add a CSS selector for the scroll event, and listen to the scroll event of the `Window` by default |
-| openDomWatch | `Boolean` | false | Whether to enable dom monitoring. If there is a dom change in `containerElementSelector`, the offsetTop of each ref will be recalculated. |
+| container | `String` | - | (**necessary**)Specify the article's container |
+| innerScroll | `Boolean` | `false` | Whether to scroll inside the container |
+| activeColor | `String` | `#006bff` | Color when in current catalog |
+| levelGap | `Number` | 20 | Offsets of different levels of directories |
+| iconLeft | `Boolean` | `false` | Whether the icon of each level of catalog is left aligned and does not follow the offset |
+| lineLeft | `Number` | 22 | The left value of the left line of the catalog |
+| lineShow | `Boolean` | `true` | Whether to show the left line of the catalog |
+| title | `String` | - | Title at the top of the table of contents |
+| height | `String` | - | The height of the catalog can be set to the value of height in css.When the catalog is too long and exceeds the height, it will automatically scroll to the current catalog.Of course, you can also set the height directly in the parent component |
+| watch | `Boolean` | false | Whether to enable dom monitoring, if there is a dom change in `container`, it will recalculate the offsetTop of each level of catalog.For example, the expansion and collapse of the folded panel need to be recalculated |
+| levelList | `Array` | `["h2", "h3", "h4", "h5"]` | Assign tags to each level of catalog |
 
 ## Methods
 
 | Name | Parameters | Description |
 | --- | --- | --- |
-| initActive | - | Make the first line of the directory active |
-| setRefList | - | Calculate the offsetTop of each level directory |
+| initActive | - | Make the first line of the catalog active |
+| setTopList | - | Calculate the offsetTop of each level of the catalog. When the deviation between the article and the catalog does not correspond, you can call this method to recalculate |
 
 ## Slot
 | Name | Description |
 | --- | --- |
-| - | Title of Directory |
+| default | Customize the icon of each line of catalog, the parameter is `{level, isActive}` |
+| row | Customize each line of catalog, the parameter is `{level, isActive, title}` |
