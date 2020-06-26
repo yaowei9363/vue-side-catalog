@@ -139,7 +139,8 @@ export default {
 
 > 注意：**`headList`** 和 **`refList`** 同时设置的话，会忽视 **`headList`**
 ### 指定元素滚动
-也可以使用 **`scrollElementSelector`** 对固定元素的内容生成目录，如果不指定该属性则默认监听`Window`的scroll事件
+
+也可以使用 **`scrollElementSelector`** 指定scroll事件的监听元素，如果不指定该属性则默认监听`Window`
 
 ```javascript
  data(){

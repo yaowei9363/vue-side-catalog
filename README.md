@@ -143,8 +143,10 @@ The effect is as follows:
 ![image](http://p9.qhimg.com/t01108c4316caf3f010.png)
 
 > Note: If **`headList`** and **`refList`** are set at the same time, **`headList`** will be ignored.
+
 ### Specify element scroll
-You can also use **`scrollElementSelector`** to generate a directory for the content of a fixed element. If this attribute is not specified, the scroll event of` Window` is listened to by default.
+You can also use **`scrollElementSelector`** to specify the listener element for scroll events. If you do not specify this property, the default listener is `Window`
+
 ```javascript
  data(){
     return {
