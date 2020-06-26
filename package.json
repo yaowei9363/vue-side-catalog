@@ -1,6 +1,6 @@
 {
   "name": "vue-side-catalog",
-  "version": "2.0.1-beta",
+  "version": "2.0.0",
   "description": "A Catalog Component for Vue.js.",
   "private": false,
   "main": "lib/vue-side-catalog.umd.min",
@@ -20,9 +20,11 @@
     "url": "git@github.com:yaowei9363/vue-side-catalog.git"
   },
   "keywords": [
-    "catalog",
     "vue",
-    "side-catalog"
+    "catalog",
+    "directory",
+    "vue-directory",
+    "vue-catalog"
   ],
   "dependencies": {
     "lodash.debounce": "^4.0.8",
