@@ -201,7 +201,7 @@ Use the `iconLeft` parameter to align all icons to the left, and `lineLeft` to a
 | lineShow | `Boolean` | `true` | Whether to show the left line of the catalog |
 | title | `String` | - | Title at the top of the table of contents |
 | height | `String` | - | The height of the catalog can be set to the value of height in css.When the catalog is too long and exceeds the height, it will automatically scroll to the current catalog.Of course, you can also set the height directly in the parent component |
-| watch | `Boolean` | false | Whether to enable dom monitoring, if there is a dom change in `container`, it will recalculate the offsetTop of each level of catalog.For example, the expansion and collapse of the folded panel need to be recalculated |
+| watch | `Boolean` | false | Whether to enable dom monitoring, if there is a dom change in `container`, it will recalculate the offsetTop of each level of catalog.For example, using `v-html` dynamic rendering, or folding the panel to expand and collapse, etc. need to be recalculated |
 | levelList | `Array` | `["h2", "h3", "h4", "h5"]` | Assign tags to each level of catalog |
 
 ## Methods
