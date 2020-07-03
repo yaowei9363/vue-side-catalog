@@ -196,7 +196,7 @@ export default {
 | lineShow | `Boolean` | `true` | 是否展示目录左侧线 |
 | title | `String` | - | 目录顶部标题 |
 | height | `String` | - | 目录的高，可设为css中height的值。当目录过长超出高度，会自动滚动到当前目录。当然也可使在父组件中直接设置height |
-| watch | `Boolean` | false | 是否开启dom监听，如果`container`中有dom变化会重新计算每级目录的offsetTop。例如折叠面板展开和收起等情况需要重新计算 |
+| watch | `Boolean` | false | 是否开启dom监听，如果`container`中有dom变化会重新计算每级目录的offsetTop。例如使用`v-html`动态渲染，或者折叠面板展开和收起等情况需要重新计算 |
 | levelList | `Array` | `["h2", "h3", "h4", "h5"]` | 为每级目录指定标签 |
 
 ## Methods
