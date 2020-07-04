@@ -203,6 +203,7 @@ Use the `iconLeft` parameter to align all icons to the left, and `lineLeft` to a
 | height | `String` | - | The height of the catalog can be set to the value of height in css.When the catalog is too long and exceeds the height, it will automatically scroll to the current catalog.Of course, you can also set the height directly in the parent component |
 | watch | `Boolean` | false | Whether to enable dom monitoring, if there is a dom change in `container`, it will recalculate the offsetTop of each level of catalog.For example, using `v-html` dynamic rendering, or folding the panel to expand and collapse, etc. need to be recalculated |
 | levelList | `Array` | `["h2", "h3", "h4", "h5"]` | Assign tags to each level of catalog |
+| only-child | `Boolean` | `false` | Whether only children elements can be selected by levelList |
 
 ## Methods
 

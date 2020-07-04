@@ -136,7 +136,11 @@ export default {
     lineShow: {
       type: Boolean,
       default: true
-    }
+    },
+    onlyChild: {
+      type: Boolean,
+      default: false
+    },
   },
   data() {
     return {
@@ -321,20 +325,27 @@ export default {
       this.levelList.forEach((item, index) => {
         headlevel[item] = index + 1;
       });
-      const childrenList = Array.from(
-        document.querySelectorAll(`${this.container}>*`)
-      );
+      const connector = this.onlyChild ? '>' : '';
+      const pattern = this.levelList.map((selector) => {
+        return `${this.container} ${connector} ${selector}`;
+      }).join();
+      const childrenList = Array.from(document.querySelectorAll(pattern));
       childrenList.forEach((item, index) => {
-        const nodeName = item.nodeName.toLowerCase();
-        if (this.levelList.includes(nodeName)) {
-          this.topList.push({
-            ref: `${item.nodeName}-${index}`,
-            title: item.innerText,
-            offsetTop: item.offsetTop,
-            level: headlevel[nodeName]
-          });
-          this.refTopMap[`${item.nodeName}-${index}`] = item.offsetTop;
-        }
+        let level = -1;
+        // 也不长，直接遍历
+        this.levelList.forEach((selector, index) => {
+          if(item.matches(selector)) level = index;
+        });
+        if(level === -1) return;
+        const ref = `${item.nodeName}-${index}`;
+        const offsetTop = item.offsetTop;
+        this.topList.push({
+          ref,
+          title: item.innerText,
+          offsetTop: offsetTop,
+          level: level
+        });
+        this.refTopMap[ref] = offsetTop;
       });
     }
   }
